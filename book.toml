@@ -8,4 +8,4 @@ title = "OpenXR Tutorial"
 [output.html]
 mathjax-support = true
 git-repository-url = "https://github.com/openxr-tutorial/openxr-tutorial.github.io"
-edit-url-template = "https://github.com/openxr-tutorial/openxr-tutorial.github.io/edit/master/{path}"
+edit-url-template = "https://github.com/openxr-tutorial/openxr-tutorial.github.io/edit/main/{path}"
