@@ -162,11 +162,11 @@ creating it we must pass the runtime details about our application.</p>
 <p>First, we'll fill in an <code>XrApplicationInfo</code> struct with information about our application. 
 This data will be used by the driver to present useful information, such as in the runtime's overlay.</p>
 <pre><code class="language-c">XrApplicationInfo application_info = {
-        .apiVersion = XR_CURRENT_API_VERSION,
-        .applicationName = &quot;OpenXR Tutorial&quot;,
-        .applicationVersion = 1,
-        .engineName = &quot;OpenXR Tutorial Engine&quot;,
-        .engineVersion = 1,
+    .apiVersion = XR_CURRENT_API_VERSION,
+    .applicationName = &quot;OpenXR Tutorial&quot;,
+    .applicationVersion = 1,
+    .engineName = &quot;OpenXR Tutorial Engine&quot;,
+    .engineVersion = 1,
 };
 </code></pre>
 <p>We're using designated initialization, which allows us to conveniently intitialise the
@@ -177,8 +177,8 @@ an instance requires us to fill out one more struct: <code>XrInstanceCreateInfo<
 which API layers and Extensions that we wish to use. For now, we'll be leaving those fields blank
 and just passing in the application info.</p>
 <pre><code class="language-c">XrInstanceCreateInfo instance_info = {
-        .type = XR_TYPE_INSTANCE_CREATE_INFO,
-        .applicationInfo = application_info,
+    .type = XR_TYPE_INSTANCE_CREATE_INFO,
+    .applicationInfo = application_info,
 };
 </code></pre>
 <p>This struct has a field <code>type</code> which is common among all structs passed directly to OpenXR procedures.
@@ -203,6 +203,41 @@ into your computer. Runtimes such as SteamVR will refuse to even initialise Open
 detected, so make sure yours is plugged in.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="loading-extensions"><a class="header" href="#loading-extensions">Loading Extensions</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="creating-a-debug-messenger"><a class="header" href="#creating-a-debug-messenger">Creating a Debug Messenger</a></h1>
+<p>When writing OpenXR application code, it's inevitable that we'll make the occasional mistake.
+Since OpenXR is rigorously specified, correct usage of OpenXR procedures can, to an extent,
+be programmatically verified. </p>
+<p>Doing this by default would, however, impose too large a performance penalty on applications.
+So, during development, we can optionally enable debug utils to help us write correct code.
+This is done with the <code>XR_EXT_debug_utils</code> extension. To enable the extension, we must modify
+our call to <code>xrCreateInstance</code> to include the name of the extension.</p>
+<pre><code class="language-c">char *enabled_extensions[] = {XR_EXT_DEBUG_UTILS_EXTENSION_NAME};
+XrInstanceCreateInfo instance_info = {
+    .type = XR_TYPE_INSTANCE_CREATE_INFO,
+    .applicationInfo = application_info,
+    .enabledExtensionCount = 1,
+    .enabledExtensionNames = enabled_extensions,
+};
+</code></pre>
+<p>With the extension enabled, we can now create a Debug Utils Messenger, which will be referenced by
+a <code>XrDebugUtilsMessengerEXT</code> handle. To create one, we must provide the OpenXR runtime with a callback,
+which will be invoked whenever a debug message is produced. Inside this callback, we can choose to
+do whatever we wish. Here, we will print the information with <code>printf</code>, another option would be writing
+messages to a logfile.</p>
+<p>The function signature of the callback is declared in the OpenXR headers as <code>PFN_xrDebugUtilsMessengerCallbackEXT</code>.
+We can copy that signature to define our function. In C++, <code>extern &quot;C&quot;</code> should be prepended to the declaration
+to ensure it has C linkage.</p>
+<pre><code class="language-c">XrBool32 openxr_debug_callback(
+        XrDebugUtilsMessageSeverityFlagsEXT              messageSeverity,
+        XrDebugUtilsMessageTypeFlagsEXT                  messageTypes,
+        const XrDebugUtilsMessengerCallbackDataEXT*      callbackData,
+        void* userData) {
+    printf(&quot;XR DEBUG MESSAGE: %s\n&quot;, callbackData-&gt;message;
+    return XR_FALSE;
+}
+</code></pre>
+<p>The return value of this callback is an <code>XrBool32</code> indicating whether the calling layer should abort the call of
+the function that produced the debug callback. This can be useful to abort execution if, for example, <code>messageSeverity</code>
+contains the <code>XR_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT</code> bit. Here, we simply always continue execution.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="creating-a-xrsession"><a class="header" href="#creating-a-xrsession">Creating a XrSession</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="the-event-loop"><a class="header" href="#the-event-loop">The Event Loop</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="handling-session-state-changes"><a class="header" href="#handling-session-state-changes">Handling Session State Changes</a></h1>

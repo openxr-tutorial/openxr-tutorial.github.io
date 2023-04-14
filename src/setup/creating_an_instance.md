@@ -9,11 +9,11 @@ This data will be used by the driver to present useful information, such as in t
 
 ```c
 XrApplicationInfo application_info = {
-        .apiVersion = XR_CURRENT_API_VERSION,
-        .applicationName = "OpenXR Tutorial",
-        .applicationVersion = 1,
-        .engineName = "OpenXR Tutorial Engine",
-        .engineVersion = 1,
+    .apiVersion = XR_CURRENT_API_VERSION,
+    .applicationName = "OpenXR Tutorial",
+    .applicationVersion = 1,
+    .engineName = "OpenXR Tutorial Engine",
+    .engineVersion = 1,
 };
 ```
 
@@ -28,8 +28,8 @@ and just passing in the application info.
 
 ```c
 XrInstanceCreateInfo instance_info = {
-        .type = XR_TYPE_INSTANCE_CREATE_INFO,
-        .applicationInfo = application_info,
+    .type = XR_TYPE_INSTANCE_CREATE_INFO,
+    .applicationInfo = application_info,
 };
 ```
 

@@ -159,11 +159,11 @@ creating it we must pass the runtime details about our application.</p>
 <p>First, we'll fill in an <code>XrApplicationInfo</code> struct with information about our application. 
 This data will be used by the driver to present useful information, such as in the runtime's overlay.</p>
 <pre><code class="language-c">XrApplicationInfo application_info = {
-        .apiVersion = XR_CURRENT_API_VERSION,
-        .applicationName = &quot;OpenXR Tutorial&quot;,
-        .applicationVersion = 1,
-        .engineName = &quot;OpenXR Tutorial Engine&quot;,
-        .engineVersion = 1,
+    .apiVersion = XR_CURRENT_API_VERSION,
+    .applicationName = &quot;OpenXR Tutorial&quot;,
+    .applicationVersion = 1,
+    .engineName = &quot;OpenXR Tutorial Engine&quot;,
+    .engineVersion = 1,
 };
 </code></pre>
 <p>We're using designated initialization, which allows us to conveniently intitialise the
@@ -174,8 +174,8 @@ an instance requires us to fill out one more struct: <code>XrInstanceCreateInfo<
 which API layers and Extensions that we wish to use. For now, we'll be leaving those fields blank
 and just passing in the application info.</p>
 <pre><code class="language-c">XrInstanceCreateInfo instance_info = {
-        .type = XR_TYPE_INSTANCE_CREATE_INFO,
-        .applicationInfo = application_info,
+    .type = XR_TYPE_INSTANCE_CREATE_INFO,
+    .applicationInfo = application_info,
 };
 </code></pre>
 <p>This struct has a field <code>type</code> which is common among all structs passed directly to OpenXR procedures.
