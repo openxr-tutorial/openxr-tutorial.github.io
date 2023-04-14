@@ -7,14 +7,23 @@ be programmatically verified.
 Doing this by default would, however, impose too large a performance penalty on applications.
 So, during development, we can optionally enable debug utils to help us write correct code.
 This is done with the `XR_EXT_debug_utils` extension. To enable the extension, we must modify
-our call to `xrCreateInstance` to include the name of the extension.
+our call to `xrCreateInstance` to include the name of the extension. Since this is, for now,
+our only extension, we'll put the extension count behind a preprocessor check, to only enable
+it during debug builds.
 
 ```c
-char *enabled_extensions[] = {XR_EXT_DEBUG_UTILS_EXTENSION_NAME};
+#ifndef NDEBUG
+const char *enabled_extensions[] = {XR_EXT_DEBUG_UTILS_EXTENSION_NAME};
+uint32_t extension_count = 1;
+#else
+const char **enabled_extensions = NULL;
+uint32_t extension_count = 0;
+#endif
+
 XrInstanceCreateInfo instance_info = {
     .type = XR_TYPE_INSTANCE_CREATE_INFO,
     .applicationInfo = application_info,
-    .enabledExtensionCount = 1,
+    .enabledExtensionCount = extension_count,
     .enabledExtensionNames = enabled_extensions,
 };
 ```
