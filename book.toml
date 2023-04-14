@@ -1,6 +1,11 @@
 [book]
-authors = ["cshenton"]
+authors = ["Charlie Shenton"]
 language = "en"
 multilingual = false
 src = "src"
 title = "OpenXR Tutorial"
+
+[output.html]
+mathjax-support = true
+git-repository-url = "https://github.com/openxr-tutorial/openxr-tutorial.github.io"
+edit-url-template = "https://github.com/openxr-tutorial/openxr-tutorial.github.io/edit/master/src/{path}"
